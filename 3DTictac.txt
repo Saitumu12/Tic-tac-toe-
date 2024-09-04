@@ -1,0 +1,58 @@
+#include <stdio.h>
+
+#define SIZE 3
+
+void initializeGrid(int grid[SIZE][SIZE][SIZE]) {
+    for (int i = 0; i < SIZE; i++)
+        for (int j = 0; j < SIZE; j++)
+            for (int k = 0; k < SIZE; k++)
+                grid[i][j][k] = 0;
+}
+
+void printGrid(int grid[SIZE][SIZE][SIZE]) {
+    for (int i = 0; i < SIZE; i++) {
+        printf("Level %d:\n", i + 1);
+        for (int j = 0; j < SIZE; j++) {
+            for (int k = 0; k < SIZE; k++) {
+                printf("%d ", grid[i][j][k]);
+            }
+            printf("\n");
+        }
+        printf("\n");
+    }
+}
+
+int checkWin(int grid[SIZE][SIZE][SIZE]) {
+    for (int i = 0; i < SIZE; i++) {
+        if (grid[0][i][0] != 0 && grid[0][i][0] == grid[0][i][1] && grid[0][i][1] == grid[0][i][2]) {
+            return grid[0][i][0];
+        }
+    }
+    return 0;
+}
+
+int main() {
+    int grid[SIZE][SIZE][SIZE];
+    int player = 1;
+    int x, y, z;
+    int winner = 0;
+
+    initializeGrid(grid);
+
+    while (winner == 0) {
+        printGrid(grid);
+        printf("Player %d's turn. Enter your move (x y z): ", player);
+        scanf("%d %d %d", &x, &y, &z);
+
+        if (grid[x][y][z] == 0) {
+            grid[x][y][z] = player;
+            winner = checkWin(grid);
+            player = (player == 1) ? 2 : 1;
+        } else {
+            printf("Invalid move! Try again.\n");
+        }
+    }
+
+    printf("Player %d wins!\n", winner);
+    return 0;
+}
